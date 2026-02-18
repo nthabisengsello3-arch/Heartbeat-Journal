@@ -7,95 +7,118 @@
 
 <style>
 body {
-  margin: 0;
-  font-family: 'Georgia', serif;
-  background: linear-gradient(to right, #f6f2ea, #ede6da);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+    margin:0;
+    font-family: "Georgia", serif;
+    background:#d8d1c7;
 }
 
-.book {
-  width: 90%;
-  max-width: 900px;
-  height: 80vh;
-  background: #fffdf8;
-  border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-  display: flex;
-  overflow: hidden;
+h1 {
+    text-align:center;
+    margin-top:30px;
+    letter-spacing:2px;
 }
 
-.page {
-  flex: 1;
-  padding: 25px;
-  display: flex;
-  flex-direction: column;
+.container {
+    display:flex;
+    justify-content:center;
+    gap:0;
+    margin:40px auto;
+    max-width:1000px;
+    background:#f5f1ec;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
 }
 
-.left {
-  border-right: 1px solid #e6ded2;
+.side {
+    flex:1;
+    padding:40px;
+    text-align:center;
+    border-right:1px solid #e2ddd7;
+}
+
+.side:last-child {
+    border-right:none;
 }
 
 h2 {
-  text-align: center;
-  font-weight: normal;
-  letter-spacing: 2px;
+    margin-bottom:10px;
+    letter-spacing:1px;
 }
 
 textarea {
-  flex: 1;
-  border: none;
-  resize: none;
-  padding: 10px;
-  font-family: inherit;
-  font-size: 15px;
-  background: transparent;
-  outline: none;
+    width:100%;
+    height:150px;
+    border:none;
+    border-radius:12px;
+    padding:15px;
+    font-family:inherit;
+    background:#faf8f5;
+    resize:none;
 }
 
 button {
-  margin-top: 10px;
-  padding: 10px;
-  border: none;
-  background: #d8cfc2;
-  border-radius: 10px;
-  cursor: pointer;
-  font-family: inherit;
+    margin-top:20px;
+    padding:12px 30px;
+    border:none;
+    border-radius:12px;
+    background:#c8bfb3;
+    cursor:pointer;
+    font-size:16px;
 }
 
 button:hover {
-  background: #cfc4b5;
+    background:#b7ada0;
+}
+
+.savedMsg {
+    margin-top:10px;
+    font-size:14px;
+    color:#6d645c;
 }
 </style>
 </head>
 
 <body>
 
-<div class="book">
-  <div class="page left">
-    <h2>Nthabi's Side</h2>
-    <textarea id="nthabiText" placeholder="Write what your heart wants to say..."></textarea>
-    <button onclick="saveText('nthabiText')">Save</button>
-  </div>
+<h1>Heartbeat Journal</h1>
 
-  <div class="page">
-    <h2>Lolo's Side</h2>
-    <textarea id="loloText" placeholder="Write what your heart wants to say..."></textarea>
-    <button onclick="saveText('loloText')">Save</button>
-  </div>
+<div class="container">
+
+<div class="side">
+<h2>Nthabi's Side</h2>
+<textarea id="nthabi"></textarea>
+<br>
+<button onclick="saveNthabi()">Save</button>
+<div id="nthabiSaved" class="savedMsg"></div>
+</div>
+
+<div class="side">
+<h2>Lolo's Side</h2>
+<textarea id="lolo"></textarea>
+<br>
+<button onclick="saveLolo()">Save</button>
+<div id="loloSaved" class="savedMsg"></div>
+</div>
+
 </div>
 
 <script>
-function saveText(id) {
-  localStorage.setItem(id, document.getElementById(id).value);
+// load saved entries
+window.onload = function() {
+    document.getElementById("nthabi").value = localStorage.getItem("nthabiEntry") || "";
+    document.getElementById("lolo").value = localStorage.getItem("loloEntry") || "";
+};
+
+function saveNthabi() {
+    localStorage.setItem("nthabiEntry", document.getElementById("nthabi").value);
+    document.getElementById("nthabiSaved").innerText = "Saved ❤️";
 }
 
-window.onload = () => {
-  document.getElementById('nthabiText').value = localStorage.getItem('nthabiText') || '';
-  document.getElementById('loloText').value = localStorage.getItem('loloText') || '';
-};
+function saveLolo() {
+    localStorage.setItem("loloEntry", document.getElementById("lolo").value);
+    document.getElementById("loloSaved").innerText = "Saved ❤️";
+}
 </script>
 
 </body>
