@@ -1,108 +1,126 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Heartbeat Journal</title>
 
 <style>
 body {
-    background:#e8e0d5;
-    font-family: Georgia, serif;
     margin:0;
-    padding:40px;
+    font-family: "Georgia", serif;
+    background:#d8d1c7;
 }
 
 h1 {
     text-align:center;
-    font-weight:normal;
+    margin-top:30px;
     letter-spacing:2px;
 }
 
 .container {
-    max-width:900px;
-    margin:auto;
+    display:flex;
+    justify-content:center;
+    gap:0;
+    margin:40px auto;
+    max-width:1000px;
+    background:#f5f1ec;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.side {
+    flex:1;
+    padding:40px;
+    text-align:center;
+    border-right:1px solid #e2ddd7;
+}
+
+.side:last-child {
+    border-right:none;
+}
+
+h2 {
+    margin-bottom:10px;
+    letter-spacing:1px;
 }
 
 textarea {
     width:100%;
-    height:120px;
-    padding:15px;
+    height:150px;
     border:none;
-    border-radius:10px;
-    font-size:16px;
-    margin-bottom:15px;
+    border-radius:12px;
+    padding:15px;
+    font-family:inherit;
+    background:#faf8f5;
+    resize:none;
 }
 
 button {
-    width:100%;
-    padding:14px;
+    margin-top:20px;
+    padding:12px 30px;
     border:none;
-    border-radius:10px;
-    background:#cfc4b6;
-    font-size:16px;
+    border-radius:12px;
+    background:#c8bfb3;
     cursor:pointer;
+    font-size:16px;
 }
 
-.entry {
-    background:white;
-    padding:15px;
-    margin-top:15px;
-    border-radius:10px;
+button:hover {
+    background:#b7ada0;
+}
+
+.savedMsg {
+    margin-top:10px;
+    font-size:14px;
+    color:#6d645c;
 }
 </style>
-
 </head>
+
 <body>
 
 <h1>Heartbeat Journal</h1>
 
 <div class="container">
-<textarea id="message" placeholder="Write what's on your heart..."></textarea>
-<button onclick="saveEntry()">Save Entry</button>
 
-<div id="entries"></div>
+<div class="side">
+<h2>Nthabi's Side</h2>
+<textarea id="nthabi"></textarea>
+<br>
+<button onclick="saveNthabi()">Save</button>
+<div id="nthabiSaved" class="savedMsg"></div>
 </div>
 
-<!-- Firebase libraries -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+<div class="side">
+<h2>Lolo's Side</h2>
+<textarea id="lolo"></textarea>
+<br>
+<button onclick="saveLolo()">Save</button>
+<div id="loloSaved" class="savedMsg"></div>
+</div>
+
+</div>
 
 <script>
-// 🔥 YOU WILL REPLACE THIS CONFIG
-const firebaseConfig = {
-  apiKey: "PASTE_KEY",
-  authDomain: "PASTE_DOMAIN",
-  projectId: "PASTE_ID",
+// load saved entries
+window.onload = function() {
+    document.getElementById("nthabi").value = localStorage.getItem("nthabiEntry") || "";
+    document.getElementById("lolo").value = localStorage.getItem("loloEntry") || "";
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-function saveEntry(){
-    let text = document.getElementById("message").value;
-    if(text.trim()=="") return;
-
-    db.collection("journal").add({
-        message:text,
-        date:new Date()
-    });
-
-    document.getElementById("message").value="";
+function saveNthabi() {
+    localStorage.setItem("nthabiEntry", document.getElementById("nthabi").value);
+    document.getElementById("nthabiSaved").innerText = "Saved ❤️";
 }
 
-db.collection("journal")
-.orderBy("date")
-.onSnapshot(snapshot=>{
-    const entries=document.getElementById("entries");
-    entries.innerHTML="";
-    snapshot.forEach(doc=>{
-        let div=document.createElement("div");
-        div.className="entry";
-        div.textContent=doc.data().message;
-        entries.appendChild(div);
-    });
-});
+function saveLolo() {
+    localStorage.setItem("loloEntry", document.getElementById("lolo").value);
+    document.getElementById("loloSaved").innerText = "Saved ❤️";
+}
 </script>
 
 </body>
 </html>
+
